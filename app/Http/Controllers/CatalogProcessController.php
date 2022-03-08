@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DeepCopy\f001\A;
 use Illuminate\Http\Request;
+use App\Models\Movie;
 
 class CatalogProcessController extends Controller
 {
@@ -36,8 +37,21 @@ class CatalogProcessController extends Controller
 
         $mensaje = "Se creo una nueva Pelicula Coreectamente! :)";
 
+        /// comienza con la base de datos 
 
-        return view('catalog.create');
+            $movie = new Movie();
+            $movie->id = $id_newMovie;
+            $movie ->titulo = $titulo;
+            $movie->director = $director;
+            $movie ->anio = $anio;
+            $movie ->rented = false;
+            $movie ->poster = $poster;
+            $movie ->synopsis = $synopsis;
+
+            $movie->save();
+        
+
+        return view('catalog.index',array('movies'=>$this->getMovies()));
     }
 
     public function editMovie(Request $request){
@@ -73,7 +87,9 @@ class CatalogProcessController extends Controller
         $mensaje = "Pelicula Modificada Coreectamente! :)";
 
         echo "<script> alert('".$mensaje."'); </script>";
-     return view('catalog.edit',$this -> buscarPelicula($id_movie)) ;;
+
+
+     return view('catalog.edit',array('movie'=>$this->updateMovieId($id_movie,$request))) ;;
     }
 
     private function buscarPelicula($id){
@@ -100,5 +116,36 @@ class CatalogProcessController extends Controller
 		
 
 		return $arrayPeliculas;
+	}
+
+    private function getMovies(){
+        $movie = Movie::all();
+
+        return $movie;
+    }
+    private function updateMovieId($id,$request){
+
+		$movie = Movie::findOrFail($id);
+
+        $titulo = $request->get('title');
+        $anio = $request->get('anio');
+        $director = $request->get('director');
+        $poster = $request->get('poster');
+        $synopsis = $request->get('synopsis');
+    
+
+            $movie ->titulo = $titulo;
+            $movie->director = $director;
+            $movie ->anio = $anio;
+            $movie ->rented = false;
+            $movie ->poster = $poster;
+            $movie ->synopsis = $synopsis;
+
+            $movie->save();
+
+
+		//$movie = DB::table('movies') -> where ('id',$id);
+
+        return $movie;
 	}
 }

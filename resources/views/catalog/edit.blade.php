@@ -18,13 +18,13 @@
                     <th>titulo</th>
                     <td>
                 
-                        <input type="text" name="title" class="form-control" value="{{$movie['title']}}">
+                        <input type="text" name="title" class="form-control" value="{{$movie['titulo']}}">
                     </td>
                 </tr>
                 <tr>
                     <th>Año</th>
                     <td>
-                        <input type="text" name="anio" class="form-control" value="{{$movie['year']}}" >
+                        <input type="text" name="anio" class="form-control" value="{{$movie['anio']}}" >
                     </td>
                 </tr>
                 <tr>

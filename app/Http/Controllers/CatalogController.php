@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Movie;
+use Illuminate\Support\Facades\DB;
 
 
 class CatalogController extends Controller
@@ -11,7 +13,7 @@ class CatalogController extends Controller
 
 		$peliculas['catalogoPeliculas'] = $this ->catalogoPeliculas();
 
-        return view('catalog.index',$peliculas);
+        return view('catalog.index',array('movies'=>$this->getMovies()));
     }
 
     public function getCreate(){
@@ -21,13 +23,13 @@ class CatalogController extends Controller
 
     public function getEdit($id){
  
-		return view('catalog.edit',$this -> buscarPelicula($id)) ;
+		return view('catalog.edit',array('movie'=>$this->getMovieId($id))) ;
 			
     }
 
     public function getShow($id){
 		
-		return view('catalog.show',$this -> buscarPelicula($id)) ;
+		return view('catalog.show',array('movie'=>$this->getMovieId($id))) ;
 			
         
     }
@@ -56,6 +58,21 @@ class CatalogController extends Controller
 		
 
 		return $arrayPeliculas;
+	}
+
+	private function getMovies(){
+        $movies = Movie::all();
+
+        return $movies;
+    }
+
+	private function getMovieId($id){
+
+		$movie = Movie::findOrFail($id);
+
+		//$movie = DB::table('movies') -> where ('id',$id);
+
+        return $movie;
 	}
 
    
